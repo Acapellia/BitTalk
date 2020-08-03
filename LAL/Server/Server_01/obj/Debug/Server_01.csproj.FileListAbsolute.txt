@@ -7,3 +7,12 @@ D:\CSharpProject\CSharpProject_01\Server_01\obj\Debug\Server_01.csproj.GenerateR
 D:\CSharpProject\CSharpProject_01\Server_01\obj\Debug\Server_01.csproj.CoreCompileInputs.cache
 D:\CSharpProject\CSharpProject_01\Server_01\obj\Debug\Server_01.exe
 D:\CSharpProject\CSharpProject_01\Server_01\obj\Debug\Server_01.pdb
+D:\BitTalk\LAL\Server\Server_01\bin\Debug\Server_01.exe.config
+D:\BitTalk\LAL\Server\Server_01\bin\Debug\Server_01.exe
+D:\BitTalk\LAL\Server\Server_01\bin\Debug\Server_01.pdb
+D:\BitTalk\LAL\Server\Server_01\obj\Debug\Server_01.csprojAssemblyReference.cache
+D:\BitTalk\LAL\Server\Server_01\obj\Debug\Server_01.Properties.Resources.resources
+D:\BitTalk\LAL\Server\Server_01\obj\Debug\Server_01.csproj.GenerateResource.cache
+D:\BitTalk\LAL\Server\Server_01\obj\Debug\Server_01.csproj.CoreCompileInputs.cache
+D:\BitTalk\LAL\Server\Server_01\obj\Debug\Server_01.exe
+D:\BitTalk\LAL\Server\Server_01\obj\Debug\Server_01.pdb

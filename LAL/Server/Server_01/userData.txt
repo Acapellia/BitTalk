@@ -1,15 +1,20 @@
 NUM001
+0
 이대건
-0
-0
+MENTO
 ../../4.jpg
 NUM002
+0
 최광현
-0
-0
+MENTO
 ../../3.jpg
 NUM003
+0
 박재홍
-0
-0
+MENTO
 ../../cat.jpg
+MENTO
+0
+미하일로 톨로토스
+0
+../../MENTO.jpg

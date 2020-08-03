@@ -25,6 +25,7 @@ namespace Server_01
         bool isRecv = true;     // 수신담당 스레드 반복 플래그
         Dictionary<string, user> userKeyManager = new Dictionary<string, user>();
         List<user> userM = new List<user>();
+
         class user
         {
             public string ID
@@ -33,7 +34,7 @@ namespace Server_01
             { get; set; } = "0";
             public string Name
             { get; set; }
-            public string MentoName
+            public string MentoID
             { get; set; } = "0";
 
             public string ProfileLocation
@@ -41,16 +42,20 @@ namespace Server_01
             public Image ProfileImage
             { get; set; }
 
+            public string ChatFileLocation
+            { get; set; } = "0";
             public string IP
             { get; set; } = "0";
-            public Socket socket
-            { get; set; } = null;
           
             public int UserType
             { get; set; } = 0;
 
-            public List<Socket> MentoSocket
+            public List<NetworkStream> MentoNet
             { get; set; } = null;
+
+            public List<string> MentoMember
+            { get; set; } = null;
+
             public bool MentoChk
             { get; set; } = false;
         }
@@ -82,10 +87,17 @@ namespace Server_01
         private void Form1_Load(object sender, EventArgs e)
         {
             addMsgData = AddLogListBox;
-            loadingUserData();
+            LoadingUserData();
+            TestingMento();
         }
 
-        private void loadingUserData()
+        private void TestingMento()
+        {
+            userKeyManager["MENTO"].MentoNet = new List<NetworkStream>();
+            userKeyManager["MENTO"].MentoMember = new List<string>();
+        }
+
+        private void LoadingUserData()
         {
             string[] userText = File.ReadAllLines(@"../../userData.txt");
             int i = 0; int j = 0;
@@ -105,7 +117,7 @@ namespace Server_01
                         userM[j].Name = usData;
                         break;
                     case 3:
-                        userM[j].MentoName = usData;
+                        userM[j].MentoID = usData;
                         break;
                     case 4:
                         userM[j].ProfileLocation = usData;
@@ -192,26 +204,46 @@ namespace Server_01
                     StreamWriter sw = new StreamWriter(ns);
 
                     string data = sr.ReadLine();
-                    string pass = sr.ReadLine();
-                    if (!userKeyManager.ContainsKey(data))
+                    string[] parse = data.Split(new char[2] {',', ':' });
+                    string id="nop";
+                    string pass= "nop";
+
+                    for(int i = 0; i <parse.Length; i++)
+                    {
+                        if(parse[i]=="id")
+                        {
+                            id = parse[i + 1];
+                        }
+                        else if(parse[i]=="pw")
+                        {
+                            pass = parse[i + 1];
+                        }
+                    }
+                    
+                    
+                    if (!userKeyManager.ContainsKey(id))
                     {
                         sw.WriteLine("등록되지 않은 사용자입니다. 접속이 거부되었습니다.");
                     }
-                    else if (userKeyManager[data].Password != pass)
+                    else if (userKeyManager[id].Password != pass)
                     {
                         sw.WriteLine("잘못된 비밀번호입니다.");
                     }
                     else
                     {
-                        userKeyManager[data].IP = address;
-                        userKeyManager[data].socket = partnerSocket;
-                        if (userKeyManager[data].MentoChk)
-                        { userKeyManager[data].MentoSocket = new List<Socket>(); userKeyManager[data].MentoSocket.Add(userKeyManager[data].socket); }
-                        Thread tRecv = new Thread(() => ThreadRecv(ns, data));
+                        sw.WriteLine("접속되었습니다.");
+                        userKeyManager[id].IP = address;
+                        //test용 코드
+                        userKeyManager["MENTO"].MentoNet.Add(ns);
+                        userKeyManager["MENTO"].MentoMember.Add(id);
+                        //
+                        if (userKeyManager[id].MentoChk)
+                        { userKeyManager[id].MentoNet = new List<NetworkStream>(); userKeyManager[id].MentoNet.Add(ns); }
+                        Thread tRecv = new Thread(() => ThreadRecv(ns, id));
                         tRecv.IsBackground = true;
                         tRecv.Start();
                     }
-                    sw.Flush();
+                        sw.Flush();
                 }
                 catch (Exception ex)
                 {
@@ -219,88 +251,87 @@ namespace Server_01
                 }
             }
         }
-        void ThreadRecv(object obj, string name)
+        void ThreadRecv(object obj, string id)
         {
             NetworkStream ns = obj as NetworkStream;
             StreamReader sr = new StreamReader(ns);
             StreamWriter sw = new StreamWriter(ns);
-            StreamWriter tw;
 
             while (this.isRecv)
             {
                 try
                 {
-                    if (userKeyManager[name].UserType == 0)
+                    if (userKeyManager[id].UserType == 0)
                     {
-                        userKeyManager[name].UserType = Convert.ToInt32(sr.ReadLine()) - 48;
+                        string data = sr.ReadLine();
+                        if (data == "type1")
+                        {
+                            userKeyManager[id].UserType = 1;
+                            string sendChatData = null;
+                            string[] readAll = File.ReadAllLines($"../../{userKeyManager[userKeyManager[id].MentoID].ID}.txt");
+                            sendChatData = "Lines:5,";
+                            for (int i = 1; i < 6; i++)
+                            {
+                                sendChatData = sendChatData + $"Lines{i}:" + readAll[readAll.Length - i] + ",";
+                            }
+                            sendChatData = sendChatData + $"MentoName:{userKeyManager[userKeyManager[id].MentoID].Name}" + ",";
+                            int j = 1;
+                            sendChatData = sendChatData + $"TotalMentee:{userKeyManager[userKeyManager[id].MentoID].MentoMember.Count}" + ",";
+                            foreach (string MemberName in userKeyManager[userKeyManager[id].MentoID].MentoMember)
+                            {
+                                sendChatData = sendChatData + $"MenteeName{j}:{userKeyManager[MemberName].Name}" + ",";
+                            }
+                            sw.WriteLine(sendChatData);
+                            Console.WriteLine(sendChatData);
+                            sw.Flush();
+                        }
                     }
                     else
                     {
-                        if (userKeyManager[name].UserType == 1) //멘토 평가
-                        { }
-                        else if (userKeyManager[name].UserType == 2) //멘토 단톡방
+                        if (userKeyManager[id].UserType == 3) //멘토 평가
                         {
                             string data = sr.ReadLine();
-                            if (data == "type(1)")
-                            { userKeyManager[name].UserType = 1; }
-                            else
-                            {
-                                foreach (Socket socket in userKeyManager[userKeyManager[name].MentoName].MentoSocket)
+                            if (data == "type1")
+                            { userKeyManager[id].UserType = 1; }
+                        }
+                        else if (userKeyManager[id].UserType == 0 || userKeyManager[id].UserType == 1) //멘토 단톡방
+                        {
+                            string data = sr.ReadLine();
+                            //if (data == "type1")
+                            //{ userKeyManager[id].UserType = 1;
+                            //  string readAllFile = null;
+                            //  string[] readAll = File.ReadAllLines($"../../{userKeyManager[userKeyManager[id].MentoID].ID}.txt");
+                            //    readAllFile = "Lines:5,";
+                            //    for(int i =1; i < 6; i++)
+                            //    {
+                            //        readAllFile = readAllFile + $"Lines{i}:"+ readAll[readAll.Length - i] +",";
+                            //    }
+                            //    sw.WriteLine(readAllFile);
+                            //    sw.Flush();
+                            //}
+                            //if
+                            //{
+                                string chat = "<" + userKeyManager[id].Name + ">" + data;
+                                foreach (NetworkStream socket in userKeyManager[userKeyManager[id].MentoID].MentoNet)
                                 {
-                                    NetworkStream us = new NetworkStream(socket);
-                                    StreamWriter uw = new StreamWriter(us);
+                                    StreamWriter uw = new StreamWriter(socket);
+                                    StreamWriter writer;
                                     uw.AutoFlush = true;
-                                    uw.WriteLine(data);
+                                    uw.WriteLine(chat);
+                                    if(userKeyManager[id].ChatFileLocation == "0")
+                                    { userKeyManager[id].ChatFileLocation = $"../../{userKeyManager[userKeyManager[id].MentoID].ID}.txt"; }
+                                    writer = File.AppendText($"../../{userKeyManager[userKeyManager[id].MentoID].ID}.txt");
+                                    writer.WriteLine(chat);
+                                    writer.Close();
                                 }
-                            }
+                            //}
                         }
                     }
-                    //sw.WriteLine("누구에게 보내시겠습니까?");
-                    //sw.Flush();
-                    //string who = sr.ReadLine();
-                    //bool chk = false;
-                    //bool nop = false;
-                    //if (who == "NO")
-                    //{
-                    //    sw.WriteLine("메시지를 입력하세요.");
-                    //    sw.Flush();
-                    //}
-                    //else if (!userKeyManager.ContainsKey(who))
-                    //{
-                    //    sw.WriteLine("없는 사람입니다.");
-                    //    sw.Flush();
-                    //    nop = true;
-                    //}
-                    //else if (userKeyManager[who].IP == "0")
-                    //{
-                    //    sw.WriteLine($"{who}가 접속해있지 않습니다.");
-                    //    sw.Flush();
-                    //    nop = true;
-                    //}
-                    //else
-                    //{
-                    //    sw.WriteLine("보낼 메시지를 입력하세요.");
-                    //    sw.Flush();
-                    //    chk = true;
-                    //}
-                    //if (!nop)
-                    //{
-                    //    string data = sr.ReadLine();
-                    //    AddLogListBox("← Client 수신 : " + data);
-                    //    if (chk)
-                    //    {
-                    //        tw = new StreamWriter(new NetworkStream(userKeyManager[who].socket));
-                    //        tw.WriteLine(data);
-                    //        tw.Flush();
-                    //    }
-                    //    sw.WriteLine(data);
-                    //    sw.Flush();
-                    //    AddLogListBox("→ Client Echo : " + data);
-                    //}
                 }
                 catch (Exception ex)
                 {
-                    AddLogListBox("Exception : " + ex.Message);
+                    Console.WriteLine("Exception[2][2] : " + ex.Message);
+                    AddLogListBox("Exception[2][2] : " + ex.Message);
                     break;
                 }
             }

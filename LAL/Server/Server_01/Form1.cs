@@ -239,7 +239,21 @@ namespace Server_01
                         if (userKeyManager[name].UserType == 1) //멘토 평가
                         { }
                         else if (userKeyManager[name].UserType == 2) //멘토 단톡방
-                        { }    
+                        {
+                            string data = sr.ReadLine();
+                            if (data == "type(1)")
+                            { userKeyManager[name].UserType = 1; }
+                            else
+                            {
+                                foreach (Socket socket in userKeyManager[userKeyManager[name].MentoName].MentoSocket)
+                                {
+                                    NetworkStream us = new NetworkStream(socket);
+                                    StreamWriter uw = new StreamWriter(us);
+                                    uw.AutoFlush = true;
+                                    uw.WriteLine(data);
+                                }
+                            }
+                        }
                     }
                     //sw.WriteLine("누구에게 보내시겠습니까?");
                     //sw.Flush();

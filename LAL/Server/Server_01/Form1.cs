@@ -27,32 +27,21 @@ namespace Server_01
         List<user> userM = new List<user>();
         class user
         {
-            public string ID
-            { get; set; }
-            public string Password
-            { get; set; } = "0";
-            public string Name
-            { get; set; }
-            public string MentoName
-            { get; set; } = "0";
+            public string ID{ get; set; }
+            public string Password{ get; set; } = "0";
+            public string Name{ get; set; }
+            public string MentoName{ get; set; } = "0";
 
-            public string ProfileLocation
-            { get; set; }
-            public Image ProfileImage
-            { get; set; }
+            public string ProfileLocation{ get; set; }
+            public Image ProfileImage{ get; set; }
 
-            public string IP
-            { get; set; } = "0";
-            public Socket socket
-            { get; set; } = null;
+            public string IP{ get; set; } = "0";
+            public Socket socket{ get; set; } = null;
           
-            public int UserType
-            { get; set; } = 0;
+            public int UserType { get; set; } = 0;
 
-            public List<Socket> MentoSocket
-            { get; set; } = null;
-            public bool MentoChk
-            { get; set; } = false;
+            public List<Socket> MentoSocket{ get; set; } = null;
+            public bool MentoChk{ get; set; } = false;
         }
 
         delegate void AddMsgData(string data);

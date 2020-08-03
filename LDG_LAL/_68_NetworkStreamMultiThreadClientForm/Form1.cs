@@ -28,7 +28,7 @@ namespace _64_NetworkStreamMultiThreadClientForm
         delegate void AddLogData(string data);
         AddLogData addLogData = null;
 
-        int leftTabSize = 100;
+        int leftTabSize = 20;
         int pageIndex = 0;
 
         public Form1()
@@ -56,22 +56,24 @@ namespace _64_NetworkStreamMultiThreadClientForm
             this.addLogData = AddLogListBox;
             this.Width = 1500;
             this.Height = 900;
-            MakeButtons();
+            //MakeButtons();
             //MakeRoomUI();
         }
+
         private void Form1_Paint(object sender, PaintEventArgs e) {
-            e.Graphics.DrawLine(new Pen(Brushes.YellowGreen, 10), leftTabSize, 0, leftTabSize, ClientRectangle.Bottom);
+            e.Graphics.DrawLine(new Pen(Brushes.YellowGreen, 10), leftTabSize+30, 0, leftTabSize, ClientRectangle.Bottom);
             if(pageIndex == 0) {
                 e.Graphics.DrawString("Main Page", new Font("맑은 고딕", 100), Brushes.Blue, 200, 0);
             }
-            if(pageIndex == 1) {
+            if(pageIndex == 3) {
                 e.Graphics.DrawString("Login Page", new Font("맑은 고딕", 100), Brushes.Blue, 200, 0);
             }
             if(pageIndex == 2) {
                 e.Graphics.DrawString("Register Page", new Font("맑은 고딕", 100), Brushes.Blue, 200, 0);
             }
-            if(pageIndex == 3) {
+            if(pageIndex == 1) {
                 Font font = new Font("맑은 고딕", 30);
+                
                 e.Graphics.DrawString("Room Title", font, Brushes.Blue, leftTabSize + 10, 0);
                 e.Graphics.DrawString("참여자 : n명", new Font("맑은 고딕", 15), Brushes.Blue, leftTabSize + 15, 50);
                 //e.Graphics.DrawImage(mentorImg, 10, 50);
@@ -92,8 +94,7 @@ namespace _64_NetworkStreamMultiThreadClientForm
                 e.Graphics.DrawString("Profile Page", new Font("맑은 고딕", 100), Brushes.Blue, 200, 0);
             }
         }
-        ListBox chatLog;
-        TextBox chatText;
+
         private void MakeRoomUI() {
             chatLog = new ListBox();
             const int profileTab = 250;
@@ -125,7 +126,7 @@ namespace _64_NetworkStreamMultiThreadClientForm
             }
         }
 
-        private void MakeButtons() {
+        /*private void MakeButtons() {
             int BUTTON_SIZE = 100;
             Button[] btn = new Button[5];
             string[] btnString = new string[5] { "Main", "Login", "Register", "Matching", "Profile" };
@@ -142,22 +143,24 @@ namespace _64_NetworkStreamMultiThreadClientForm
             }
             btn[0].Click += Btn_Main_Click;
             btn[3].Click += Btn_Matching_Click;
-        }
-        private void Btn_Main_Click(object sender, EventArgs e) {
+        }*/
+        /*private void Btn_Main_Click(object sender, EventArgs e) {
             pageIndex = 0;
             this.Controls.Clear();
             MakeButtons();
             sw.WriteLine("type" + pageIndex.ToString());
             Invalidate();
-        }
-        private void Btn_Matching_Click(object sender, EventArgs e) {
+        }*/
+        /*private void Btn_Matching_Click(object sender, EventArgs e) {
             pageIndex = 3;
             this.Controls.Clear();
-            MakeButtons();
-            MakeRoomUI();
+            lbLog.Hide();
+            tbChat.Hide();
+            //MakeButtons();
+            //MakeRoomUI();
             sw.WriteLine("type" + pageIndex.ToString());
             Invalidate();
-        }
+        }*/
         private void btnConnect_Click(object sender, EventArgs e)
         {
             this.isRecv = true;
@@ -245,18 +248,62 @@ namespace _64_NetworkStreamMultiThreadClientForm
         void ThreadRecv()
         {
             StreamReader sr = new StreamReader(this.ns);
+            
             while (this.isRecv)
             {
                 try
                 {
                     string data = sr.ReadLine();
                     AddLogListBox("→ from Server : " + data);
-                    
-                }catch(Exception ex)
+                    //AddChatLogBox("→ from Server : " + data);
+                }
+                catch(Exception ex)
                 {
                     AddLogListBox("Exception: " + ex.Message);
                     break;
                 }
+            }
+        }
+
+
+        private void tabUI_SelectedIndexChanged(object sender, EventArgs e) {
+            TabControl tab = sender as TabControl;
+            pageIndex = tab.TabPages.IndexOf(tab.SelectedTab);
+            sw.WriteLine("type" + pageIndex.ToString());
+            Console.WriteLine(pageIndex);
+        }
+
+        private void tabPage2_Paint(object sender, PaintEventArgs e) {
+            if(pageIndex == 1) {
+                Font font = new Font("맑은 고딕", 30);
+
+                e.Graphics.DrawString("Room Title", font, Brushes.Blue, leftTabSize + 10, 0);
+                e.Graphics.DrawString("참여자 : n명", new Font("맑은 고딕", 15), Brushes.Blue, leftTabSize + 15, 50);
+                //e.Graphics.DrawImage(mentorImg, 10, 50);
+                e.Graphics.DrawString("< Mentor >", new Font("맑은 고딕", 15), Brushes.Blue, leftTabSize + 15, 80);
+                e.Graphics.DrawRectangle(new Pen(Brushes.Red), leftTabSize + 15, 120, 200, 200);
+                e.Graphics.DrawString("Mentor Name", new Font("맑은 고딕", 15), Brushes.Blue, leftTabSize + 15, 320);
+                int menteeCnt = 3;
+                int menteePro = 350;
+                e.Graphics.DrawString("< Mentee >", new Font("맑은 고딕", 15), Brushes.Blue, leftTabSize + 15, menteePro);
+                for(int i = 0; i < menteeCnt; i++) {
+                    e.Graphics.DrawRectangle(new Pen(Brushes.Red), leftTabSize + 15, menteePro + 40, 100, 100);
+                    e.Graphics.DrawString("Mentee Name", new Font("맑은 고딕", 13), Brushes.Blue, leftTabSize + 15, menteePro + 140);
+                    menteePro += 140;
+                }
+
+            }
+        }
+
+        private void chatText_KeyDown(object sender, KeyEventArgs e) {
+            switch(e.KeyCode) {
+                case Keys.Enter:
+                    string data = chatText.Text;
+                    this.sw.WriteLine(data);
+                    this.sw.Flush();
+                    AddChatLogBox("← to Client : " + data);
+                    chatText.Clear();
+                    break;
             }
         }
     }

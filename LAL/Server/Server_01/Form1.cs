@@ -28,6 +28,12 @@ namespace Server_01
 
         class user
         {
+<<<<<<< HEAD
+            public string ID{ get; set; }
+            public string Password{ get; set; } = "0";
+            public string Name{ get; set; }
+            public string MentoName{ get; set; } = "0";
+=======
             public string ID
             { get; set; }
             public string Password
@@ -36,18 +42,30 @@ namespace Server_01
             { get; set; }
             public string MentoID
             { get; set; } = "0";
+>>>>>>> a48a29b5ca0080692cc6705b40cf4c080d257e64
 
-            public string ProfileLocation
-            { get; set; }
-            public Image ProfileImage
-            { get; set; }
+            public string ProfileLocation{ get; set; }
+            public Image ProfileImage{ get; set; }
 
+<<<<<<< HEAD
+            public string IP{ get; set; } = "0";
+            public Socket socket{ get; set; } = null;
+=======
             public string ChatFileLocation
             { get; set; } = "0";
+<<<<<<< HEAD
+=======
+            public string IP
+            { get; set; } = "0";
+>>>>>>> a48a29b5ca0080692cc6705b40cf4c080d257e64
+>>>>>>> 2c3be16c7d56f740fb74055bc7e803619cdbc8f7
           
-            public int UserType
-            { get; set; } = 0;
+            public int UserType { get; set; } = 0;
 
+<<<<<<< HEAD
+            public List<Socket> MentoSocket{ get; set; } = null;
+            public bool MentoChk{ get; set; } = false;
+=======
             public List<NetworkStream> MentoNet
             { get; set; } = null;
 
@@ -56,6 +74,7 @@ namespace Server_01
 
             public bool MentoChk
             { get; set; } = false;
+>>>>>>> a48a29b5ca0080692cc6705b40cf4c080d257e64
         }
 
         delegate void AddMsgData(string data);

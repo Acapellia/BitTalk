@@ -30,15 +30,16 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.tbIp = new System.Windows.Forms.TextBox();
-            this.tbPort = new System.Windows.Forms.TextBox();
+            this.tbID = new System.Windows.Forms.TextBox();
+            this.tbPW = new System.Windows.Forms.TextBox();
             this.btnConnect = new System.Windows.Forms.Button();
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
-            this.lbLog = new System.Windows.Forms.ListBox();
             this.tbChat = new System.Windows.Forms.TextBox();
             this.tabUI = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnLogin = new System.Windows.Forms.ListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.chatText = new System.Windows.Forms.TextBox();
             this.chatLog = new System.Windows.Forms.ListBox();
@@ -53,9 +54,9 @@
             this.label1.Font = new System.Drawing.Font("휴먼편지체", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label1.Location = new System.Drawing.Point(18, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(149, 38);
+            this.label1.Size = new System.Drawing.Size(47, 38);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Server IP";
+            this.label1.Text = "ID";
             // 
             // label2
             // 
@@ -63,34 +64,34 @@
             this.label2.Font = new System.Drawing.Font("휴먼편지체", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label2.Location = new System.Drawing.Point(18, 64);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(182, 38);
+            this.label2.Size = new System.Drawing.Size(58, 38);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Server Port";
+            this.label2.Text = "PW";
             // 
-            // tbIp
+            // tbID
             // 
-            this.tbIp.Font = new System.Drawing.Font("휴먼편지체", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.tbIp.Location = new System.Drawing.Point(216, 9);
-            this.tbIp.Name = "tbIp";
-            this.tbIp.Size = new System.Drawing.Size(227, 45);
-            this.tbIp.TabIndex = 1;
-            this.tbIp.Text = "127.0.0.1";
-            this.tbIp.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbID.Font = new System.Drawing.Font("휴먼편지체", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tbID.Location = new System.Drawing.Point(216, 9);
+            this.tbID.Name = "tbID";
+            this.tbID.Size = new System.Drawing.Size(227, 45);
+            this.tbID.TabIndex = 1;
+            this.tbID.Text = "NUM001";
+            this.tbID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // tbPort
+            // tbPW
             // 
-            this.tbPort.Font = new System.Drawing.Font("휴먼편지체", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.tbPort.Location = new System.Drawing.Point(216, 57);
-            this.tbPort.Name = "tbPort";
-            this.tbPort.Size = new System.Drawing.Size(227, 45);
-            this.tbPort.TabIndex = 1;
-            this.tbPort.Text = "9000";
-            this.tbPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbPW.Font = new System.Drawing.Font("휴먼편지체", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tbPW.Location = new System.Drawing.Point(216, 57);
+            this.tbPW.Name = "tbPW";
+            this.tbPW.Size = new System.Drawing.Size(227, 45);
+            this.tbPW.TabIndex = 1;
+            this.tbPW.Text = "0";
+            this.tbPW.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btnConnect
             // 
             this.btnConnect.Font = new System.Drawing.Font("휴먼편지체", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnConnect.Location = new System.Drawing.Point(463, 9);
+            this.btnConnect.Location = new System.Drawing.Point(1015, 9);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(214, 45);
             this.btnConnect.TabIndex = 2;
@@ -101,34 +102,22 @@
             // btnDisconnect
             // 
             this.btnDisconnect.Font = new System.Drawing.Font("휴먼편지체", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnDisconnect.Location = new System.Drawing.Point(463, 56);
+            this.btnDisconnect.Location = new System.Drawing.Point(1195, 57);
             this.btnDisconnect.Name = "btnDisconnect";
             this.btnDisconnect.Size = new System.Drawing.Size(214, 46);
             this.btnDisconnect.TabIndex = 2;
             this.btnDisconnect.Text = "Disconnect";
             this.btnDisconnect.UseVisualStyleBackColor = true;
-            this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
             // 
             // btnClear
             // 
             this.btnClear.Font = new System.Drawing.Font("휴먼편지체", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnClear.Location = new System.Drawing.Point(693, 9);
+            this.btnClear.Location = new System.Drawing.Point(1248, 9);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(161, 45);
             this.btnClear.TabIndex = 2;
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = true;
-            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
-            // 
-            // lbLog
-            // 
-            this.lbLog.Font = new System.Drawing.Font("휴먼편지체", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lbLog.FormattingEnabled = true;
-            this.lbLog.ItemHeight = 31;
-            this.lbLog.Location = new System.Drawing.Point(25, 125);
-            this.lbLog.Name = "lbLog";
-            this.lbLog.Size = new System.Drawing.Size(1375, 593);
-            this.lbLog.TabIndex = 3;
             // 
             // tbChat
             // 
@@ -137,7 +126,6 @@
             this.tbChat.Name = "tbChat";
             this.tbChat.Size = new System.Drawing.Size(1375, 45);
             this.tbChat.TabIndex = 4;
-            this.tbChat.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbChat_KeyDown);
             // 
             // tabUI
             // 
@@ -155,13 +143,14 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.tbChat);
             this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.lbLog);
-            this.tabPage1.Controls.Add(this.tbIp);
+            this.tabPage1.Controls.Add(this.btnLogin);
+            this.tabPage1.Controls.Add(this.tbID);
             this.tabPage1.Controls.Add(this.btnClear);
-            this.tabPage1.Controls.Add(this.tbPort);
+            this.tabPage1.Controls.Add(this.tbPW);
             this.tabPage1.Controls.Add(this.btnDisconnect);
             this.tabPage1.Controls.Add(this.btnConnect);
             this.tabPage1.Location = new System.Drawing.Point(31, 4);
@@ -171,6 +160,26 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Login";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(468, 31);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(132, 51);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Login";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnLogin
+            // 
+            this.btnLogin.Font = new System.Drawing.Font("휴먼편지체", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnLogin.FormattingEnabled = true;
+            this.btnLogin.ItemHeight = 31;
+            this.btnLogin.Location = new System.Drawing.Point(25, 125);
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(1375, 593);
+            this.btnLogin.TabIndex = 3;
             // 
             // tabPage2
             // 
@@ -225,18 +234,19 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox tbIp;
-        private System.Windows.Forms.TextBox tbPort;
+        private System.Windows.Forms.TextBox tbID;
+        private System.Windows.Forms.TextBox tbPW;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Button btnDisconnect;
         private System.Windows.Forms.Button btnClear;
-        private System.Windows.Forms.ListBox lbLog;
         private System.Windows.Forms.TextBox tbChat;
         private System.Windows.Forms.TabControl tabUI;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TextBox chatText;
         private System.Windows.Forms.ListBox chatLog;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ListBox btnLogin;
     }
 }
 

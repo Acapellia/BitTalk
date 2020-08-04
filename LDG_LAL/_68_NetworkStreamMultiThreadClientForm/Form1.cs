@@ -43,19 +43,43 @@ namespace _64_NetworkStreamMultiThreadClientForm
             try
             {
                 this.isRecv = false;
-                if (this.clientSocket != null &&
-                    this.clientSocket.Connected)
+                if(this.clientSocket != null && this.clientSocket.Connected) {
+                    string data = "request:Exit";
+                    sw.WriteLine(data);
                     this.clientSocket.Close();
+                }
             }catch(Exception ex)
             {
-                AddLogListBox("Exception : " + ex.Message);
+                //AddLogListBox("Exception : " + ex.Message);
             }
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.addLogData = AddLogListBox;
+            this.addLogData = AddChatLogBox;
+
             this.Width = 1500;
             this.Height = 900;
+            this.isRecv = true;
+            this.clientSocket =
+                new Socket(AddressFamily.InterNetwork,
+                            SocketType.Stream,
+                            ProtocolType.Tcp);
+            this.ipep =
+                new IPEndPoint(IPAddress.Parse("10.89.30.147"),
+                                Int32.Parse("9000"));
+            //AddLogListBox("서버 접속 요청중...");
+            this.clientSocket.Connect(this.ipep);
+            //AddLogListBox("서버 접속 완료");
+
+            this.ns = new NetworkStream(this.clientSocket);
+            this.sw = new StreamWriter(this.ns);
+            this.sw.AutoFlush = true;
+            this.tRecv = new Thread(new ThreadStart(ThreadRecv));
+            this.tRecv.IsBackground = true;
+            this.tRecv.Start();
+
+            btnConnect.Enabled = false;
+            btnDisconnect.Enabled = true;
             //MakeButtons();
             //MakeRoomUI();
         }
@@ -163,17 +187,19 @@ namespace _64_NetworkStreamMultiThreadClientForm
         }*/
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            this.isRecv = true;
+
+            /*this.isRecv = true;
             this.clientSocket =
                 new Socket(AddressFamily.InterNetwork,
                             SocketType.Stream,
                             ProtocolType.Tcp);
             this.ipep =
-                new IPEndPoint(IPAddress.Parse(tbIp.Text),
-                                Int32.Parse(tbPort.Text));
+                new IPEndPoint(IPAddress.Parse("10.89.30.147"),
+                                Int32.Parse("9000"));
             AddLogListBox("서버 접속 요청중...");
             this.clientSocket.Connect(this.ipep);
             AddLogListBox("서버 접속 완료");
+
 
             this.ns = new NetworkStream(this.clientSocket);
             this.sw = new StreamWriter(this.ns);
@@ -183,10 +209,10 @@ namespace _64_NetworkStreamMultiThreadClientForm
             this.tRecv.Start();
 
             btnConnect.Enabled = false;
-            btnDisconnect.Enabled = true;
+            btnDisconnect.Enabled = true;*/
         }
 
-        private void btnDisconnect_Click(object sender, EventArgs e)
+        /*private void btnDisconnect_Click(object sender, EventArgs e)
         {
             try
             {
@@ -203,9 +229,9 @@ namespace _64_NetworkStreamMultiThreadClientForm
                 btnConnect.Enabled = true;
                 btnDisconnect.Enabled = false;
             }
-        }
+        }*/
 
-        private void btnClear_Click(object sender, EventArgs e)
+        /*private void btnClear_Click(object sender, EventArgs e)
         {
             lbLog.Items.Clear();
         }
@@ -222,9 +248,9 @@ namespace _64_NetworkStreamMultiThreadClientForm
                     tbChat.Clear();
                     break;
             }
-        }
+        }*/
 
-        void AddLogListBox(string data)
+        /*void AddLogListBox(string data)
         {
             if (lbLog.InvokeRequired)
             {
@@ -235,7 +261,7 @@ namespace _64_NetworkStreamMultiThreadClientForm
                 lbLog.Items.Add(data);
                 lbLog.SelectedIndex = lbLog.Items.Count - 1;
             }
-        }
+        }*/
         void AddChatLogBox(string data) {
             if(chatLog.InvokeRequired) {
                 Invoke(addLogData, new object[] { data });
@@ -254,12 +280,33 @@ namespace _64_NetworkStreamMultiThreadClientForm
                 try
                 {
                     string data = sr.ReadLine();
-                    AddLogListBox("→ from Server : " + data);
-                    //AddChatLogBox("→ from Server : " + data);
+                    string[] parse = data.Split(new char[2] { ',', ':' });
+                    string answer = parse[1];
+                    Console.WriteLine(data);
+                    Console.WriteLine(answer);
+                    /*foreach(string s in parse) {
+                        Console.WriteLine(s);
+                    }*/
+                    switch(answer) {
+                        case "Login":
+                            if(parse[3] == "접속되었습니다.")
+                                MessageBox.Show(parse[3]);
+                            //AddChatLogBox("→ from Server : " + parse[3]);
+                            break;
+                        case "Tab2":
+                            Console.WriteLine("abc");
+                            Console.WriteLine(parse[3]);
+                            int lines = Convert.ToInt32(parse[3]);
+                            for(int i = 0; i < lines; i++) {
+                                AddChatLogBox("→ from Server : " + parse[3+(i*2)]);
+                            }
+                            break;
+
+                    }
                 }
                 catch(Exception ex)
                 {
-                    AddLogListBox("Exception: " + ex.Message);
+                    //AddLogListBox("Exception: " + ex.Message);
                     break;
                 }
             }
@@ -268,9 +315,10 @@ namespace _64_NetworkStreamMultiThreadClientForm
 
         private void tabUI_SelectedIndexChanged(object sender, EventArgs e) {
             TabControl tab = sender as TabControl;
-            pageIndex = tab.TabPages.IndexOf(tab.SelectedTab);
-            sw.WriteLine("type" + pageIndex.ToString());
-            Console.WriteLine(pageIndex);
+            pageIndex = tab.TabPages.IndexOf(tab.SelectedTab)+1;
+            string data = "request:Tab" + pageIndex.ToString();
+            sw.WriteLine(data);
+            Console.WriteLine("Page : " + pageIndex.ToString());
         }
 
         private void tabPage2_Paint(object sender, PaintEventArgs e) {
@@ -305,6 +353,14 @@ namespace _64_NetworkStreamMultiThreadClientForm
                     chatText.Clear();
                     break;
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e) {
+            string id = tbID.Text;
+            string pw = tbPW.Text;
+            string data = "request:Login,ID:" + id + ",PW:" + pw;
+            sw.WriteLine(data);
+            this.sw.Flush();
         }
     }
 }

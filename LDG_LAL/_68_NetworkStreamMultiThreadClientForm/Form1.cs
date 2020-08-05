@@ -298,10 +298,12 @@ namespace _64_NetworkStreamMultiThreadClientForm
                             Console.WriteLine(parse[3]);
                             int lines = Convert.ToInt32(parse[3]);
                             for(int i = 0; i < lines; i++) {
-                                AddChatLogBox("→ from Server : " + parse[3+(i*2)]);
+                                AddChatLogBox(parse[5+(i*2)]);
                             }
                             break;
-
+                        case "Chat":
+                            AddChatLogBox(parse[3]);
+                            break;
                     }
                 }
                 catch(Exception ex)
@@ -346,10 +348,10 @@ namespace _64_NetworkStreamMultiThreadClientForm
         private void chatText_KeyDown(object sender, KeyEventArgs e) {
             switch(e.KeyCode) {
                 case Keys.Enter:
-                    string data = chatText.Text;
+                    string data = "request:Chat,Data:"+chatText.Text;
                     this.sw.WriteLine(data);
                     this.sw.Flush();
-                    AddChatLogBox("← to Client : " + data);
+                    //AddChatLogBox("← to Client : " + data);
                     chatText.Clear();
                     break;
             }

@@ -193,49 +193,6 @@ namespace Server_01
                     AddLogListBox("클라이언트 접속");
                     NetworkStream ns = new NetworkStream(partnerSocket);
 
-                    //StreamReader sr = new StreamReader(ns);
-                    //StreamWriter sw = new StreamWriter(ns);
-
-                    //string data = sr.ReadLine();
-                    //string[] parse = data.Split(new char[2] { ',', ':' });
-                    //string id = "nop";
-                    //string pass = "nop";
-
-                    //string request = "";
-                    //for (int i = 0; i < parse.Length; i += 2)
-                    //{
-                    //    if (parse[i] == "request")
-                    //    {
-                    //        request = parse[i + 1];
-                    //    }
-                    //    if (parse[i] == "id")
-                    //    {
-                    //        id = parse[i + 1];
-                    //        userKeyManager[id].UserRequest = request;
-                    //    }
-                    //    else if (parse[i] == "pw")
-                    //    {
-                    //        pass = parse[i + 1];
-                    //    }
-                    //}
-
-                    //if (!userKeyManager.ContainsKey(id))
-                    //{
-                    //    sw.WriteLine("등록되지 않은 사용자입니다. 접속이 거부되었습니다.");
-                    //}
-                    //else if (userKeyManager[id].Password != pass)
-                    //{
-                    //    sw.WriteLine("잘못된 비밀번호입니다.");
-                    //}
-                    //else
-                    //{
-                    //    sw.WriteLine("접속되었습니다.");
-                    //    //test용 코드
-                    //    userKeyManager["MENTO"].MentoNet.Add(ns);
-                    //    userKeyManager["MENTO"].MentoMember.Add(id);
-                    //    //
-                    //    if (userKeyManager[id].MentoChk)
-                    //    { userKeyManager[id].MentoNet = new List<NetworkStream>(); userKeyManager[id].MentoNet.Add(ns); }
                         Thread tRecv = new Thread(() => ThreadRecv(ns, partnerSocket));
                         tRecv.IsBackground = true;
                         tRecv.Start();
@@ -333,6 +290,8 @@ namespace Server_01
                     if(exit)
                     {
                         Console.WriteLine("다 끝나간다.");
+                        userKeyManager[userKeyManager[id].MentoID].MentoNet.Remove(ns);
+                        userKeyManager[userKeyManager[id].MentoID].MentoMember.Remove(id);
                         partnerSocket.Close();
                         break; }
                 }
@@ -363,8 +322,8 @@ namespace Server_01
             {
                 answer = answer + "접속되었습니다.";
                 //test용 코드
-                userKeyManager["MENTO"].MentoNet.Add(ns);
-                userKeyManager["MENTO"].MentoMember.Add(id);
+                userKeyManager[userKeyManager[id].MentoID].MentoNet.Add(ns);
+                userKeyManager[userKeyManager[id].MentoID].MentoMember.Add(id);
                 //
                 if (userKeyManager[id].MentoChk)
                 { userKeyManager[id].MentoNet = new List<NetworkStream>(); userKeyManager[id].MentoNet.Add(ns); }

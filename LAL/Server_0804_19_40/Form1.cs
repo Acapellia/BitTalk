@@ -279,6 +279,7 @@ namespace Server_01
                                     writer = File.AppendText($"../../{userKeyManager[userKeyManager[id].MentoID].ID}.txt");
                                     writer.WriteLine(chat);
                                     writer.Close();
+                                    uw.Close();
                                 }
                             }
                             break;
@@ -292,6 +293,7 @@ namespace Server_01
                         Console.WriteLine("다 끝나간다.");
                         userKeyManager[userKeyManager[id].MentoID].MentoNet.Remove(ns);
                         userKeyManager[userKeyManager[id].MentoID].MentoMember.Remove(id);
+                        sr.Close();sw.Close();ns.Close();
                         partnerSocket.Close();
                         break; }
                 }

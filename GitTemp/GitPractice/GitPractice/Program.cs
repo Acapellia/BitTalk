@@ -45,6 +45,8 @@ namespace GitPractice {
         public void Calc() {
             string sel;
             calc.Menu();
+            InputNum();
+            Console.Write("계산 기호를 입력 : ");
             sel = Console.ReadLine();
             switch(sel){
                 case "+":
@@ -68,7 +70,6 @@ namespace GitPractice {
     class Program {
         static void Main(string[] args) {
             User user = new User();
-            user.InputNum();
             user.Calc();
             user.SeeResult();
         }

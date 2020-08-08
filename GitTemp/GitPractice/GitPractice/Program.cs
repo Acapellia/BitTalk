@@ -1,6 +1,14 @@
 ﻿using System;
 
-
+<<<<<<< Updated upstream
+namespace GitPractice
+{
+    //test_branch511
+    class Calculator
+    {
+        public int Add(int a, int b)
+        {
+=======
 namespace GitPractice {
 
 
@@ -17,6 +25,7 @@ namespace GitPractice {
             Console.WriteLine(r);
         }
         public int Add() {
+>>>>>>> Stashed changes
             return a + b;
         }
         public int Sub(int a, int b)
@@ -36,13 +45,23 @@ namespace GitPractice {
             return 0;
         }
     }
-
+<<<<<<< Updated upstream
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Calculator c = new Calculator();
+            Console.WriteLine(c.Add(6, 3));
+            Console.WriteLine(c.Sub(6, 3));
+            Console.WriteLine(c.Mul(6, 3));
+            Console.WriteLine(c.Div(6, 3));
+=======
     class Program {
         static void Main(string[] args) {
             User user = new User();
             user.InputNum();
             user.Calc();
-
+>>>>>>> Stashed changes
         }
     }
 }

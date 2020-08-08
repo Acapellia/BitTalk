@@ -1,7 +1,6 @@
 ﻿using System;
 
 namespace GitPractice {
-    //test_update
     class Calculator {
         int a, b;
         public void read(int a, int b)
@@ -30,6 +29,7 @@ namespace GitPractice {
             int num1, num2;
             num1 = Convert.ToInt32(Console.ReadLine());
             num2 = Convert.ToInt32(Console.ReadLine());
+            calc.read(num1, num2);
         }
         public void Calc() {
             string sel;
@@ -58,4 +58,4 @@ namespace GitPractice {
         }
     }
 }
-}
+

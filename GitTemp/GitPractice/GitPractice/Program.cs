@@ -40,10 +40,11 @@ namespace GitPractice {
             int num1, num2;
             num1 = Convert.ToInt32(Console.ReadLine());
             num2 = Convert.ToInt32(Console.ReadLine());
-            calc.read(num1, num2);
+            calc.Read(num1, num2);
         }
         public void Calc() {
             string sel;
+            calc.Menu();
             sel = Console.ReadLine();
             switch(sel){
                 case "+":
@@ -60,12 +61,16 @@ namespace GitPractice {
                     break;
             }
         }
+        public void SeeResult() {
+            calc.Result();
+        }
     }
     class Program {
         static void Main(string[] args) {
             User user = new User();
             user.InputNum();
             user.Calc();
+            user.SeeResult();
         }
     }
 }

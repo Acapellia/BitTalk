@@ -4,6 +4,10 @@ namespace GitPractice {
     //test_update
     class Calculator {
         int a, b;
+        public void read(int a, int b)
+        { this.a = a;
+            this.b = b;
+        }
         public int Add() {
             return a + b;
         }

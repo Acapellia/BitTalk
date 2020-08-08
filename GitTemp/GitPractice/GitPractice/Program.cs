@@ -5,11 +5,17 @@ namespace GitPractice {
     class Calculator {
         int a, b;
         int result;
-        public void read(int a, int b)
+
+        public void Menu()
+        {
+            Console.WriteLine("계산기를 시작합니다");
+            Console.Write("숫자 2개를 입력하세요.");
+        }
+        public void Read(int a, int b)
         { this.a = a;
             this.b = b;
         }
-        public void result()
+        public void Result()
         {
             Console.WriteLine(result);
         }

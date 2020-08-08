@@ -8,24 +8,24 @@ namespace GitPractice {
         { this.a = a;
             this.b = b;
         }
-        public void result()
+        public void Result()
         {
             Console.WriteLine(result);
         }
-        public int Add() {
-            return a + b;
+        public void Add() {
+            result =  a + b;
         }
-        public int Sub() {
-            return a - b;
+        public void Sub() {
+            result = a - b;
         }
-        public int Mul() {
-            return a * b;
+        public void Mul() {
+            result = a * b;
         }
-        public int Div() {
+        public void Div() {
             if(b != 0) {
-                return a / b;
+                result = a / b;
             }
-            return 0;
+            result = 0;
         }
     }
     class User {

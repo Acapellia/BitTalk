@@ -1,36 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 
-namespace Calc_
-{
-    class Program
-    {
-        private int Add(List<int> num)
-        {
-            int addNum = 0;
-
-            foreach(int fornum in num)
-            {
-                addNum += fornum;
+namespace GitPractice {
+    class Calculator {
+        public int Add(int a, int b) {
+            return a + b;
+        }
+        public int Sub(int a, int b) {
+            return a - b;
+        }
+        public int Mul(int a, int b) {
+            return a * b;
+        }
+        public int Div(int a, int b) {
+            if(b != 0) {
+                return a / b;
             }
-            return addNum;
+            return 0;
         }
-        private int subtract(int one, int two)
-        {
-            int subtractNum = 0;
-
-            subtractNum = one - two;
-
-            return subtractNum;
-        }
-        static void Main(string[] args)
-        {
-            Program calc = new Program();
-            List<int> num = new List<int>();
-            for (int i = 1; i < 6; i++)
-            { num.Add(i); Console.WriteLine($"더하는 숫자 : {i}"); }
-            Console.WriteLine($"{calc.Add(num)}");
+    }
+    class Program {
+        static void Main(string[] args) {
+            Calculator c = new Calculator();
+            Console.WriteLine(c.Add(6, 3));
+            Console.WriteLine(c.Sub(6, 3));
+            Console.WriteLine(c.Mul(6, 3));
+            Console.WriteLine(c.Div(6, 3));
         }
     }
 }
